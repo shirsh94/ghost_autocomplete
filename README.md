@@ -2,8 +2,8 @@
 
 A comprehensive Flutter package providing modern "ghost" (predictive inline) autocomplete and dropdown-style suggestion widgets. Designed to mirror the professional experience of IDEs like VS Code and high-end search bars.
 
+[![pub package](https://img.shields.io/pub/v/ghost_autocomplete.svg)](https://pub.dev/packages/ghost_autocomplete)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 
 ## Screenshots
 | ![Screenshot 1](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_first.jpg?raw=true) | ![Screenshot 2](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_second.jpg?raw=true) | ![Screenshot 3](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_third.jpg?raw=true) |
