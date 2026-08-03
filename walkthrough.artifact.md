@@ -1,27 +1,31 @@
-# Final Release Polish: License and Documentation
+# Asynchronous Suggestion Support Added
 
-I've added the final pieces of metadata and comprehensive documentation to prepare the `ghost_autocomplete` package for its 1.0.0 release.
+I've updated the `ghost_autocomplete` package to support asynchronous suggestion providers. This allows the widgets to fetch inline suggestions from APIs or databases while maintaining a smooth user experience.
 
-## Key Finalizations
+## Key Enhancements
 
-### 1. MIT License Added
-Created a standard [MIT License](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/LICENSE) for the project, attributed to you (2026).
+### 1. Async-Ready Suggestion Provider
+The `GhostSuggestionProvider` typedef now supports `FutureOr<String?>`. This means you can return a simple `String?` synchronously or a `Future<String?>` asynchronously.
 
-### 2. Comprehensive README.md
-Expanded the [README.md](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/README.md) to include everything a user might need:
-- **Detailed Feature List**: Highlights the Controller-based architecture for pixel-perfect alignment.
-- **Three-Widget Reference**: Clean code snippets for `TextField`, `TextFormField`, and `ListTextField`.
-- **System Feature Integration**: Explicit documentation and examples for `spellCheckConfiguration` and `autocorrect`.
-- **Interaction Matrix**: A handy table detailing keyboard shortcuts and mouse behaviors.
-- **Customization Guide**: How to style ghost text and use custom "Tab" badges.
+### 2. Built-in Race Condition Protection
+Implemented a request tracking system within `GhostAutocompleteTextField`. If a user types quickly and multiple API requests are triggered:
+- Only the result from the **latest** request will be applied.
+- Results from older, pending requests are automatically discarded when they complete.
+- This ensures the "ghost" text always matches what the user is currently typing.
 
-### 3. Release Ready
-All version numbers have been synchronized to `1.0.0`, and placeholder comments have been removed from the configuration files.
+### 3. Asynchronous Example
+Added an **"Asynchronous API Demo"** to the example app (Inline Ghost tab). It simulates a network request with a 500ms delay, demonstrating how the widget handles async data loading.
 
-## Summary of Widgets
-- **`GhostAutocompleteTextField`**: Predictive inline typing.
-- **`GhostAutocompleteTextFormField`**: Form-validated predictive typing.
-- **`GhostAutocompleteListTextField`**: Search-style dropdown selection (Overlay-based).
+## Verification
+
+### Automated Tests
+Added [test/ghost_async_test.dart](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/test/ghost_async_test.dart) which verifies:
+- Suggestions are correctly displayed after an async delay.
+- Outdated async responses are ignored (Race condition test).
+
+### Manual Verification
+- Tested the async demo in the example app.
+- Confirmed that typing rapidly doesn't cause "flickering" or incorrect completions from previous keystrokes.
 
 > [!TIP]
-> The package is now fully "Pub Ready". You can proceed with `flutter pub publish --dry-run` to verify the package is ready for upload.
+> Use `Future.delayed` or your actual API client in the `suggestionProvider` to see this in action. The widget handles the `await` and `setState` for you.

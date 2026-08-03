@@ -1,3 +1,10 @@
+## 1.1.0
+
+* Added support for asynchronous suggestion providers (`FutureOr<String?>`).
+* Implemented built-in race condition protection for async requests.
+* Added "Asynchronous API Demo" to the example app.
+* Improved documentation for async usage.
+
 ## 1.0.0
 
 * Initial Release.

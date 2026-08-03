@@ -1,10 +1,14 @@
+import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'ghost_autocomplete_controller.dart';
 
-typedef GhostSuggestionProvider = String? Function(String text);
+/// A callback that provides a suggestion based on the current text.
+/// Supports both synchronous (String?) and asynchronous (Future<String?>) results.
+typedef GhostSuggestionProvider = FutureOr<String?> Function(String text);
 
+/// A TextField that displays a "ghost" suggestion tail based on the user's input.
 class GhostAutocompleteTextField extends StatefulWidget {
   const GhostAutocompleteTextField({
     super.key,
@@ -125,6 +129,7 @@ class _GhostAutocompleteTextFieldState extends State<GhostAutocompleteTextField>
   GhostAutocompleteController? _internalController;
   late final FocusNode _focusNode;
   bool _hasFocus = false;
+  int _lastRequestId = 0;
 
   GhostAutocompleteController get _effectiveController {
     if (widget.controller is GhostAutocompleteController) {
@@ -189,9 +194,21 @@ class _GhostAutocompleteTextFieldState extends State<GhostAutocompleteTextField>
     });
   }
 
-  void _onTextChanged() {
+  Future<void> _onTextChanged() async {
     final text = _effectiveController.text;
-    final suggestion = widget.suggestionProvider(text);
+    final requestId = ++_lastRequestId;
+
+    final dynamic result = widget.suggestionProvider(text);
+    final String? suggestion;
+
+    if (result is Future<String?>) {
+      suggestion = await result;
+    } else {
+      suggestion = result as String?;
+    }
+
+    // Prevent race conditions: only update if this was the latest request
+    if (requestId != _lastRequestId || !mounted) return;
 
     if (suggestion != null &&
         suggestion.toLowerCase().startsWith(text.toLowerCase()) &&

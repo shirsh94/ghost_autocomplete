@@ -19,6 +19,7 @@ A comprehensive Flutter package providing modern "ghost" (predictive inline) aut
 - **Full TextField Parity**: Supports over 40+ standard `TextField` parameters, including `textAlign`, `maxLines`, `obscureText`, `inputFormatters`, and more.
 - **Modern System Features**: Integrated support for `spellCheckConfiguration` and `autocorrect`.
 - **Synchronized Scrolling**: Suggestion text moves perfectly with the cursor as the field scrolls.
+- **Asynchronous Support**: Fetch suggestions from remote APIs with built-in race condition handling.
 - **Native Feature Support**: Full support for `spellCheckConfiguration`, `autocorrect`, `inputFormatters`, and more.
 
 ---
@@ -82,6 +83,25 @@ GhostAutocompleteListTextField(
     labelText: 'Search Places',
     prefixIcon: Icon(Icons.map),
   ),
+)
+```
+
+---
+
+## 🌐 Asynchronous Suggestions (API Support)
+
+The `suggestionProvider` for both the inline and list widgets supports `FutureOr`. This means you can easily fetch suggestions from a remote server or local database.
+
+The widgets include built-in **race condition protection**: if multiple requests are made in quick succession, only the result from the latest request will be displayed, ensuring the UI always reflects the current input.
+
+```dart
+GhostAutocompleteTextField(
+  suggestionProvider: (text) async {
+    // Simulate API call
+    final result = await myApi.fetchCompletion(text);
+    return result; 
+  },
+  // ...
 )
 ```
 

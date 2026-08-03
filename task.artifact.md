@@ -1,4 +1,6 @@
-- [x] Update example app theme to light mode
-- [x] Implement TabBar and TabBarView in the example app
-- [x] Organize content into "Inline Ghost", "Form Field", and "Dropdown List" tabs
-- [x] Verify the new layout and functionality
+- [ ] Update `GhostSuggestionProvider` typedef to support `FutureOr<String?>`
+- [ ] Implement async handling in `GhostAutocompleteTextField` with race condition prevention
+- [ ] Update `GhostAutocompleteTextFormField` to match the new typedef
+- [ ] Add an asynchronous demonstration in the example app
+- [ ] Update `README.md` with async usage details and examples
+- [ ] Verify functionality with automated tests

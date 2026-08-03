@@ -115,6 +115,31 @@ class _ExampleScreenState extends State<ExampleScreen> {
                       helperText: 'Native spell check + Ghost text enabled',
                     ),
                   ),
+                  const SizedBox(height: 32),
+                  const Text('Asynchronous API Demo', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  GhostAutocompleteTextField(
+                    suggestionProvider: (text) async {
+                      if (text.isEmpty) return null;
+                      // Simulate network delay
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      // Find match
+                      try {
+                        return suggestions.firstWhere(
+                          (s) => s.toLowerCase().startsWith(text.toLowerCase()) &&
+                              s.toLowerCase() != text.toLowerCase(),
+                        );
+                      } catch (_) {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'API-backed Input',
+                      hintText: 'Simulates 500ms delay...',
+                      border: OutlineInputBorder(),
+                      suffixIcon: Icon(Icons.cloud_queue),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -190,6 +215,31 @@ class _ExampleScreenState extends State<ExampleScreen> {
                         'This widget shows a scrollable list of all matching suggestions using an Overlay.',
                         style: TextStyle(fontStyle: FontStyle.italic),
                       ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  const Text('Asynchronous API Demo', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  GhostAutocompleteTextField(
+                    suggestionProvider: (text) async {
+                      if (text.isEmpty) return null;
+                      // Simulate network delay
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      // Find match
+                      try {
+                        return suggestions.firstWhere(
+                          (s) => s.toLowerCase().startsWith(text.toLowerCase()) &&
+                              s.toLowerCase() != text.toLowerCase(),
+                        );
+                      } catch (_) {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'API-backed Input',
+                      hintText: 'Simulates 500ms delay...',
+                      border: OutlineInputBorder(),
+                      suffixIcon: Icon(Icons.cloud_queue),
                     ),
                   ),
                 ],
