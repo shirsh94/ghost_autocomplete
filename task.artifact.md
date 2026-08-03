@@ -1,0 +1,4 @@
+- [x] Update example app theme to light mode
+- [x] Implement TabBar and TabBarView in the example app
+- [x] Organize content into "Inline Ghost", "Form Field", and "Dropdown List" tabs
+- [x] Verify the new layout and functionality
