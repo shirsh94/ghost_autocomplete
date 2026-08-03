@@ -6,7 +6,7 @@ A comprehensive Flutter package providing modern "ghost" (predictive inline) aut
 
 
 ## Screenshots
-| ![Screenshot 1](https://raw.githubusercontent.com/shirsh94/flutter_doc_scanner/main/demo/screen_shot_1.jpg?raw=true) | ![Screenshot 2](https://raw.githubusercontent.com/shirsh94/flutter_doc_scanner/main/demo/screen_shot_2.jpg?raw=true) | ![Screenshot 3](https://raw.githubusercontent.com/shirsh94/flutter_doc_scanner/main/demo/screen_shot_3.jpg?raw=true) |
+| ![Screenshot 1](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_first.jpg?raw=true) | ![Screenshot 2](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_second.jpg?raw=true) | ![Screenshot 3](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_third.jpg?raw=true) |
 |----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
 
 ## 🚀 Features
