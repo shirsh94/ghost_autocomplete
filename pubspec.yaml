@@ -1,6 +1,6 @@
 name: ghost_autocomplete
 description: "A comprehensive Flutter package for ghost (predictive inline) autocomplete and dropdown-style suggestions. Includes Form support, Copilot-style Tab badges, and pixel-perfect alignment."
-version: 1.2.0
+version: 1.2.1
 homepage: https://github.com/shirsh94/ghost_autocomplete
 
 environment:

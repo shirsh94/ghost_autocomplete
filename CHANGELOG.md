@@ -1,3 +1,11 @@
+## 1.2.1
+
+* Enhanced `GhostSpellCheckTextField` with full styling support for misspelled words:
+    * Added `misspelledTextStyle` for custom underlines (wavy, dotted, etc.).
+    * Added `misspelledSelectionColor` for selection highlight customization.
+    * Added `spellCheckSuggestionsToolbarBuilder` for custom context menus.
+* Updated example app to demonstrate custom dotted red underline style.
+
 ## 1.2.0
 
 * Added `GhostSpellCheckTextField` for combined inline ghost autocomplete and custom spell check.

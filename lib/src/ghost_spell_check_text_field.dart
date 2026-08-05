@@ -59,6 +59,8 @@ class GhostSpellCheckTextField extends StatelessWidget {
     this.scrollController,
     this.strutStyle,
     this.misspelledTextStyle,
+    this.misspelledSelectionColor,
+    this.spellCheckSuggestionsToolbarBuilder,
   });
 
   /// Controller for the text field.
@@ -128,6 +130,12 @@ class GhostSpellCheckTextField extends StatelessWidget {
   /// The style to use for misspelled words.
   final TextStyle? misspelledTextStyle;
 
+  /// The color of the selection highlight when spell check suggestions are shown.
+  final Color? misspelledSelectionColor;
+
+  /// A builder for the custom spell check suggestions toolbar.
+  final EditableTextContextMenuBuilder? spellCheckSuggestionsToolbarBuilder;
+
   @override
   Widget build(BuildContext context) {
     return GhostAutocompleteTextField(
@@ -185,12 +193,9 @@ class GhostSpellCheckTextField extends StatelessWidget {
           suggestionsProvider: spellCheckSuggestionsProvider,
           isMisspelled: isMisspelled,
         ),
-        misspelledTextStyle: misspelledTextStyle ??
-            const TextStyle(
-              decoration: TextDecoration.underline,
-              decorationStyle: TextDecorationStyle.wavy,
-              decorationColor: Colors.red,
-            ),
+        misspelledTextStyle: misspelledTextStyle,
+        misspelledSelectionColor: misspelledSelectionColor,
+        spellCheckSuggestionsToolbarBuilder: spellCheckSuggestionsToolbarBuilder,
       ),
     );
   }

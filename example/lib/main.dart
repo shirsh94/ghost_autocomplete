@@ -118,9 +118,15 @@ class _ExampleScreenState extends State<ExampleScreen> {
                   GhostSpellCheckTextField(
                     suggestionProvider: _getSuggestion,
                     spellCheckSuggestions: const ['how', 'ok', 'what', 'why', 'flutter', 'ghost'],
+                    misspelledTextStyle: const TextStyle(
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.red,
+                      decorationStyle: TextDecorationStyle.dotted,
+                      decorationThickness: 3,
+                    ),
                     decoration: const InputDecoration(
-                      labelText: 'Local List Spell Check',
-                      hintText: 'Type "hw" or "flutr"',
+                      labelText: 'Custom Styled Spell Check',
+                      hintText: 'Type "hw" (dotted red underline)',
                       border: OutlineInputBorder(),
                     ),
                   ),

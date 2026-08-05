@@ -97,10 +97,14 @@ Combines the inline ghost autocomplete with a custom, asynchronous spell check s
 GhostSpellCheckTextField(
   suggestionProvider: (text) => _getGhostCompletion(text),
   spellCheckSuggestions: const ['flutter', 'ghost', 'autocomplete'],
-  // Or use an async provider
-  spellCheckSuggestionsProvider: (word) async {
-    return await myApi.getSpellingSuggestions(word);
-  },
+  // Custom design for misspelled words
+  misspelledTextStyle: TextStyle(
+    decoration: TextDecoration.underline,
+    decorationColor: Colors.red,
+    decorationStyle: TextDecorationStyle.dotted,
+    decorationThickness: 3,
+  ),
+  misspelledSelectionColor: Colors.red.withOpacity(0.2),
   decoration: InputDecoration(
     labelText: 'Custom Spell Check',
     border: OutlineInputBorder(),
