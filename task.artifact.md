@@ -1,6 +1,6 @@
-- [ ] Update `GhostSuggestionProvider` typedef to support `FutureOr<String?>`
-- [ ] Implement async handling in `GhostAutocompleteTextField` with race condition prevention
-- [ ] Update `GhostAutocompleteTextFormField` to match the new typedef
-- [ ] Add an asynchronous demonstration in the example app
-- [ ] Update `README.md` with async usage details and examples
-- [ ] Verify functionality with automated tests
+- [x] Implement `GhostSpellCheckService` in `lib/src/ghost_spell_check_service.dart`
+- [x] Implement `GhostSpellCheckTextField` in `lib/src/ghost_spell_check_text_field.dart`
+- [x] Export new components in `lib/ghost_autocomplete.dart`
+- [x] Add example usage in `example/` or a test file
+- [x] Fix `GhostSpellCheckService` API compatibility with Flutter 3.29.3
+- [x] Verify functionality

@@ -72,13 +72,15 @@ class _ExampleScreenState extends State<ExampleScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Ghost Autocomplete'),
           bottom: const TabBar(
+            isScrollable: true,
             tabs: [
               Tab(text: 'Inline Ghost', icon: Icon(Icons.text_fields)),
+              Tab(text: 'Custom Spell', icon: Icon(Icons.spellcheck)),
               Tab(text: 'Form Field', icon: Icon(Icons.assignment)),
               Tab(text: 'Dropdown List', icon: Icon(Icons.list)),
             ],
@@ -95,49 +97,51 @@ class _ExampleScreenState extends State<ExampleScreen> {
                   GhostAutocompleteTextField(
                     suggestionProvider: _getSuggestion,
                     style: const TextStyle(fontSize: 18),
-
                     decoration: const InputDecoration(
                       labelText: 'Standard Input',
                       hintText: 'Try typing "hello"...',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 32),
-                  const Text('Native Features Demo', style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+
+            // Tab 2: Custom Spell Check
+            _buildTabContent(
+              title: 'Custom Spell Check',
+              subtitle: 'Suggestions from your own list or API.',
+              child: Column(
+                children: [
+                  const Text('Local List Suggestion', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  GhostAutocompleteTextField(
-                    suggestionProvider: (text) => text.isNotEmpty ? 'Correction enabled' : null,
-                    autocorrect: true,
-                    spellCheckConfiguration: const SpellCheckConfiguration(),
+                  GhostSpellCheckTextField(
+                    suggestionProvider: _getSuggestion,
+                    spellCheckSuggestions: const ['how', 'ok', 'what', 'why', 'flutter', 'ghost'],
                     decoration: const InputDecoration(
+                      labelText: 'Local List Spell Check',
+                      hintText: 'Type "hw" or "flutr"',
                       border: OutlineInputBorder(),
-                      hintText: 'Type with typos to see spell check',
-                      helperText: 'Native spell check + Ghost text enabled',
                     ),
                   ),
                   const SizedBox(height: 32),
-                  const Text('Asynchronous API Demo', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text('Asynchronous API Spell Check', style: TextStyle(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  GhostAutocompleteTextField(
-                    suggestionProvider: (text) async {
-                      if (text.isEmpty) return null;
-                      // Simulate network delay
-                      await Future.delayed(const Duration(milliseconds: 500));
-                      // Find match
-                      try {
-                        return suggestions.firstWhere(
-                          (s) => s.toLowerCase().startsWith(text.toLowerCase()) &&
-                              s.toLowerCase() != text.toLowerCase(),
-                        );
-                      } catch (_) {
-                        return null;
+                  GhostSpellCheckTextField(
+                    suggestionProvider: _getSuggestion,
+                    spellCheckSuggestionsProvider: (word) async {
+                      // Simulate API call
+                      await Future.delayed(const Duration(milliseconds: 800));
+                      if (word.toLowerCase() == 'api') {
+                        return ['Application', 'Programming', 'Interface'];
                       }
+                      return ['suggestion1', 'suggestion2'];
                     },
                     decoration: const InputDecoration(
-                      labelText: 'API-backed Input',
-                      hintText: 'Simulates 500ms delay...',
+                      labelText: 'API Spell Check',
+                      hintText: 'Type "api" and tap it',
                       border: OutlineInputBorder(),
-                      suffixIcon: Icon(Icons.cloud_queue),
+                      suffixIcon: Icon(Icons.api),
                     ),
                   ),
                 ],

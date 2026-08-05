@@ -1,27 +1,33 @@
-# [Implementation Plan] Improve Example UI with Tabs and Light Theme
+# Custom Spell Check and Ghost Autocomplete Widget
 
-Reorganize the example application into a tabbed interface for better usability and switch from a dark theme to a standard light theme.
+Implement a new widget that combines the existing inline "ghost" autocomplete with a custom spell check service that provides suggestions from a user-defined list or API.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The custom spell check service will be responsible for identifying "misspelled" words. By default, it will consider any word not present in the provided suggestion list as potentially misspelled if it's "close enough" or based on a custom validator.
 
 ## Proposed Changes
 
-### Example Application
+### [Component Name]
 
-#### [MODIFY] [main.dart](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/example/lib/main.dart)
-- **Theme Update**: Change `ThemeData` to use `Brightness.light` and set a consistent color scheme.
-- **Scaffold Update**: Remove hardcoded background colors and use standard Material colors.
-- **Tab Controller**: Wrap the main screen in a `DefaultTabController`.
-- **Navigation**:
-    - Add a `TabBar` to the `AppBar` bottom with three tabs: "Inline", "Form", and "List".
-    - Replace the `SingleChildScrollView` body with a `TabBarView`.
-- **Content Organization**:
-    - **Tab 1 (Inline)**: Show standard `GhostAutocompleteTextField` with its "Copilot" styling and advanced parameters.
-    - **Tab 2 (Form)**: Show `GhostAutocompleteTextFormField` within a `Form` with validation logic.
-    - **Tab 3 (List)**: Show `GhostAutocompleteListTextField` for dropdown-style suggestions.
+#### [NEW] [ghost_spell_check_service.dart](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/lib/src/ghost_spell_check_service.dart)
+- Implement `GhostSpellCheckService` extending `SpellCheckService`.
+- Add support for async suggestion fetching.
+- Add logic to identify misspelled words and map them to custom suggestions.
+
+#### [NEW] [ghost_spell_check_text_field.dart](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/lib/src/ghost_spell_check_text_field.dart)
+- Create `GhostSpellCheckTextField` which simplifies the integration of both ghost suggestions and custom spell check.
+- It will wrap `GhostAutocompleteTextField`.
+
+#### [MODIFY] [ghost_autocomplete.dart](file:///Users/shirsh.shukla/Documents/work/other/own/library/ghost_autocomplete/lib/ghost_autocomplete.dart)
+- Export the new service and widget.
 
 ## Verification Plan
 
+### Automated Tests
+- Unit test for `GhostSpellCheckService` to ensure it correctly identifies misspellings and returns expected suggestions from a mock list/API.
+- Widget test for `GhostSpellCheckTextField` to ensure it renders both features.
+
 ### Manual Verification
-- Run the example app on Web/macOS.
-- Switch between tabs to ensure all widgets render and function correctly.
-- Verify that the light theme looks clean and professional.
-- Confirm that suggestions still work in all three modes.
+- Create an example in the `example/` directory demonstrating the custom list and async API call for spell check.

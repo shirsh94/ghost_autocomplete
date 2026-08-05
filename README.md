@@ -6,12 +6,16 @@ A comprehensive Flutter package providing modern "ghost" (predictive inline) aut
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Screenshots
-| ![Screenshot 1](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_first.jpg?raw=true) | ![Screenshot 2](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_second.jpg?raw=true) | ![Screenshot 3](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_third.jpg?raw=true) |
-|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| ![Screenshot 1](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_first.jpg?raw=true) | ![Screenshot 2](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_second.jpg?raw=true) |
+|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| ![Screenshot 3](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_third.jpg?raw=true) | ![Screenshot 4](https://raw.githubusercontent.com/shirsh94/ghost_autocomplete/main/demo/Screenshot_four.jpg?raw=true)   |
+
+
 
 ## 🚀 Features
 
 - **Inline Ghosting**: Displays a greyed-out suggestion tail directly within the text engine for pixel-perfect alignment.
+- **Custom Spell Check**: Use `GhostSpellCheckTextField` to provide your own word lists or API-backed suggestions for typos, bypassing native platform limitations.
 - **Controller-Based Architecture**: Uses a custom `GhostAutocompleteController` to ensure the suggestion text inherits the exact baseline, metrics, and scrolling behavior of your input.
 - **Form Integration**: Includes a `TextFormField` variant for easy validation and form handling.
 - **Dropdown Lists**: A specialized widget for multi-option searches (like location or user selection) using a floating `Overlay`.
@@ -30,7 +34,7 @@ Add `ghost_autocomplete` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ghost_autocomplete: ^1.0.0
+  ghost_autocomplete: ^1.2.0
 ```
 
 ---
@@ -86,6 +90,24 @@ GhostAutocompleteListTextField(
 )
 ```
 
+### 4. GhostSpellCheckTextField
+Combines the inline ghost autocomplete with a custom, asynchronous spell check service. Perfect for apps that need to suggest specific domain-related words rather than just native dictionary words.
+
+```dart
+GhostSpellCheckTextField(
+  suggestionProvider: (text) => _getGhostCompletion(text),
+  spellCheckSuggestions: const ['flutter', 'ghost', 'autocomplete'],
+  // Or use an async provider
+  spellCheckSuggestionsProvider: (word) async {
+    return await myApi.getSpellingSuggestions(word);
+  },
+  decoration: InputDecoration(
+    labelText: 'Custom Spell Check',
+    border: OutlineInputBorder(),
+  ),
+)
+```
+
 ---
 
 ## 🌐 Asynchronous Suggestions (API Support)
@@ -104,6 +126,17 @@ GhostAutocompleteTextField(
   // ...
 )
 ```
+
+---
+
+## 🔍 Custom Spell Check (GhostSpellCheckService)
+
+By default, Flutter's `spellCheckConfiguration` uses the native platform's dictionary. `ghost_autocomplete` introduces `GhostSpellCheckService`, allowing you to:
+- Provide a **Static List** of valid words for your specific domain.
+- Use an **Async Provider** to fetch spelling corrections from an API.
+- Use a **Custom Validator** (`isMisspelled`) to determine exactly which words should be flagged.
+
+This service is fully integrated into `GhostSpellCheckTextField`, but can also be used independently with any `TextField`.
 
 ---
 

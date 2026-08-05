@@ -1,3 +1,10 @@
+## 1.2.0
+
+* Added `GhostSpellCheckTextField` for combined inline ghost autocomplete and custom spell check.
+* Added `GhostSpellCheckService` to provide custom, asynchronous spell check suggestions from user-defined lists or APIs.
+* Added "Custom Spell" demo to the example app.
+* Compatible with latest Flutter (3.29.x) spell check APIs.
+
 ## 1.1.0
 
 * Added support for asynchronous suggestion providers (`FutureOr<String?>`).
