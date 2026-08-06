@@ -34,7 +34,7 @@ Add `ghost_autocomplete` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ghost_autocomplete: ^1.2.1
+  ghost_autocomplete: ^1.2.2
 ```
 
 ---

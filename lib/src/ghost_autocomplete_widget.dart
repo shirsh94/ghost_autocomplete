@@ -143,9 +143,11 @@ class _GhostAutocompleteTextFieldState extends State<GhostAutocompleteTextField>
     super.initState();
     if (widget.controller is! GhostAutocompleteController) {
       _internalController = GhostAutocompleteController(text: widget.controller?.text);
+      widget.controller?.addListener(_handleExternalControllerChanged);
     }
     _focusNode = widget.focusNode ?? FocusNode();
     _effectiveController.addListener(_onTextChanged);
+    _effectiveController.addListener(_handleInternalControllerChanged);
     _focusNode.addListener(_onFocusChanged);
     _hasFocus = _focusNode.hasFocus;
     
@@ -156,16 +158,37 @@ class _GhostAutocompleteTextFieldState extends State<GhostAutocompleteTextField>
   void didUpdateWidget(GhostAutocompleteTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_handleExternalControllerChanged);
       oldWidget.controller?.removeListener(_onTextChanged);
+      
       if (widget.controller is GhostAutocompleteController) {
+        _internalController?.removeListener(_handleInternalControllerChanged);
         _internalController?.dispose();
         _internalController = null;
-      } else if (_internalController == null) {
-        _internalController = GhostAutocompleteController(text: widget.controller?.text);
+      } else {
+        if (_internalController == null) {
+          _internalController = GhostAutocompleteController(text: widget.controller?.text);
+        } else {
+          _internalController!.text = widget.controller?.text ?? '';
+        }
+        widget.controller?.addListener(_handleExternalControllerChanged);
       }
       _effectiveController.addListener(_onTextChanged);
+      _effectiveController.addListener(_handleInternalControllerChanged);
     }
     _updateControllerProps();
+  }
+
+  void _handleExternalControllerChanged() {
+    if (widget.controller != null && widget.controller!.value != _internalController?.value) {
+      _internalController?.value = widget.controller!.value;
+    }
+  }
+
+  void _handleInternalControllerChanged() {
+    if (_internalController != null && widget.controller != null && widget.controller!.value != _internalController?.value) {
+      widget.controller!.value = _internalController!.value;
+    }
   }
 
   void _updateControllerProps() {
@@ -178,6 +201,8 @@ class _GhostAutocompleteTextFieldState extends State<GhostAutocompleteTextField>
   @override
   void dispose() {
     _effectiveController.removeListener(_onTextChanged);
+    _effectiveController.removeListener(_handleInternalControllerChanged);
+    widget.controller?.removeListener(_handleExternalControllerChanged);
     _internalController?.dispose();
     if (widget.focusNode == null) {
       _focusNode.dispose();
@@ -432,9 +457,9 @@ class GhostAutocompleteTextFormField extends FormField<String> {
 }
 
 class _GhostAutocompleteTextFormFieldState extends FormFieldState<String> {
-  GhostAutocompleteController? _controller;
+  GhostAutocompleteController? _internalController;
 
-  GhostAutocompleteController get _effectiveController => (widget.controller as GhostAutocompleteController?) ?? _controller!;
+  TextEditingController get _effectiveController => widget.controller ?? _internalController!;
 
   @override
   GhostAutocompleteTextFormField get widget => super.widget as GhostAutocompleteTextFormField;
@@ -443,10 +468,9 @@ class _GhostAutocompleteTextFormFieldState extends FormFieldState<String> {
   void initState() {
     super.initState();
     if (widget.controller == null) {
-      _controller = GhostAutocompleteController(text: widget.initialValue);
-    } else {
-      widget.controller!.addListener(_handleControllerChanged);
+      _internalController = GhostAutocompleteController(text: widget.initialValue);
     }
+    _effectiveController.addListener(_handleControllerChanged);
   }
 
   @override
@@ -454,20 +478,21 @@ class _GhostAutocompleteTextFormFieldState extends FormFieldState<String> {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller?.removeListener(_handleControllerChanged);
-      widget.controller?.addListener(_handleControllerChanged);
-
-      if (oldWidget.controller != null && widget.controller == null) {
-        _controller = GhostAutocompleteController(text: oldWidget.controller!.text);
-      } else if (oldWidget.controller == null && widget.controller != null) {
-        _controller = null;
+      
+      if (widget.controller == null) {
+        _internalController = GhostAutocompleteController(text: oldWidget.controller?.text ?? value);
+      } else {
+        _internalController?.dispose();
+        _internalController = null;
       }
+      _effectiveController.addListener(_handleControllerChanged);
     }
   }
 
   @override
   void dispose() {
-    widget.controller?.removeListener(_handleControllerChanged);
-    _controller?.dispose();
+    _effectiveController.removeListener(_handleControllerChanged);
+    _internalController?.dispose();
     super.dispose();
   }
 
@@ -481,8 +506,10 @@ class _GhostAutocompleteTextFormFieldState extends FormFieldState<String> {
 
   @override
   void reset() {
-    _effectiveController.text = widget.initialValue ?? '';
     super.reset();
+    setState(() {
+      _effectiveController.text = widget.initialValue ?? '';
+    });
   }
 
   void _handleControllerChanged() {

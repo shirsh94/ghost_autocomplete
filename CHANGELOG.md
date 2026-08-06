@@ -1,3 +1,11 @@
+## 1.2.2
+
+* Fixed `TextEditingController` synchronization across all widgets:
+    * Programmatic updates to external controllers are now correctly reflected in the UI.
+    * Improved controller lifecycle management and support for swapping controllers at runtime.
+    * Fixed `GhostAutocompleteTextFormField` to correctly sync with its own `FormField` state when using an external controller.
+* Added `test/controller_sync_test.dart` to verify bidirectional synchronization.
+
 ## 1.2.1
 
 * Enhanced `GhostSpellCheckTextField` with full styling support for misspelled words:

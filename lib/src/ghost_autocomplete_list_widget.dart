@@ -59,8 +59,8 @@ class GhostAutocompleteListTextField extends StatefulWidget {
 }
 
 class _GhostAutocompleteListTextFieldState extends State<GhostAutocompleteListTextField> {
-  late final TextEditingController _controller;
-  late final FocusNode _focusNode;
+  late TextEditingController _controller;
+  late FocusNode _focusNode;
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
   List<String> _suggestions = [];
@@ -74,6 +74,27 @@ class _GhostAutocompleteListTextFieldState extends State<GhostAutocompleteListTe
     _focusNode = widget.focusNode ?? FocusNode();
     _controller.addListener(_onTextChanged);
     _focusNode.addListener(_onFocusChanged);
+  }
+
+  @override
+  void didUpdateWidget(GhostAutocompleteListTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_onTextChanged);
+      if (oldWidget.controller == null) {
+        _controller.dispose();
+      }
+      _controller = widget.controller ?? TextEditingController();
+      _controller.addListener(_onTextChanged);
+    }
+    if (widget.focusNode != oldWidget.focusNode) {
+      oldWidget.focusNode?.removeListener(_onFocusChanged);
+      if (oldWidget.focusNode == null) {
+        _focusNode.dispose();
+      }
+      _focusNode = widget.focusNode ?? FocusNode();
+      _focusNode.addListener(_onFocusChanged);
+    }
   }
 
   @override
