@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghost_autocomplete/ghost_autocomplete.dart';
 
 void main() {
   runApp(const MyApp());
